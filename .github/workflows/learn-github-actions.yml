@@ -11,3 +11,4 @@ jobs:
           python-version: '3.10' 
       - run: pip install -r requirements.txt
       - run: python -m pytest
+      - run: pip install -r dev-requirements.txt
