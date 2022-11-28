@@ -4,8 +4,9 @@ on: [push]
 
 jobs:
   check-bats-version:
-    runs-on: ubuntu-latest
+    name: build-and-publish
     needs: [create_release]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: JackMcKew/pyinstaller-action-linux@main
