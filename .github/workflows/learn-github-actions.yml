@@ -6,9 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.7' 
       - uses: JackMcKew/pyinstaller-action-linux@main
         with:
           path: .
@@ -17,5 +14,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: linux-build
-          path: src/dist
+          path: dist/linux
       
