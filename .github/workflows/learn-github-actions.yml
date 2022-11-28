@@ -1,10 +1,9 @@
 name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
-
 jobs:
   build-job:
-    name: buid-job
+    name: build-job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,21 +16,4 @@ jobs:
         with:
           name: build-linux
           path: dist/linux
-  check-bats-version:
-    name: build-and-publish
-    needs: [create_release]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: build-linux
-          path: .
-      - run: ls -l
-      - name: Upload the artifacts
-        uses: skx/github-action-publish-binaries@release-1.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseId: ${{ needs.create_release.outputs.id }}
-          args: 'dist/linux/main'
       
