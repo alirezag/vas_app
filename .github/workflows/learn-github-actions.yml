@@ -4,18 +4,19 @@ on: [push]
 
 jobs:
   build-job:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
-    - run: pip install -r requirements.txt
-    - run: python -m pytest
-    - uses: JackMcKew/pyinstaller-action-linux@main
-      with:
-        path: .
-    - uses: actions/upload-artifact@v2
-      with:
-        name: build-linux
-        path: dist/linux
+    name: buid-job
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: pip install -r requirements.txt
+      - run: python -m pytest
+      - uses: JackMcKew/pyinstaller-action-linux@main
+        with:
+          path: .
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-linux
+          path: dist/linux
   check-bats-version:
     name: build-and-publish
     needs: [create_release]
