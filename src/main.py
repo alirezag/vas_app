@@ -8,8 +8,8 @@ from kivy.uix.label import Label
 
 
 def hello_function():
-    print('returning 42')
-    return 42
+    print('Hello Function')
+    
     
 class MyApp(App):
 
