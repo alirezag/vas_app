@@ -5,7 +5,7 @@ from tkinter import ttk
 def hello_function():
     print('Hello Function')
     
-    
+
 if __name__ == '__main__': 
     root = Tk()
     frm = ttk.Frame(root, padding=10)
@@ -14,4 +14,4 @@ if __name__ == '__main__':
     ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
 
 
-root.mainloop()
+    root.mainloop()
