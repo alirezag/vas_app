@@ -34,7 +34,7 @@ jobs:
       - run: ls -a *
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r main-mac.zip dist
+          args: zip -qq -r main-windows.zip windows/main
       - name: Upload the artifacts
         uses: skx/github-action-publish-binaries@release-1.3
         env:
