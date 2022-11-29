@@ -18,10 +18,11 @@ jobs:
       - run: pyinstaller src/main.py
       - run: ls -a . 
       - run: ls -a dist
+      - run: ls -a dist/main
       - uses: actions/upload-artifact@v2
         with:
           name: build-mac
-          path: ./dist
+          path: dist/
   publish-mac:
     name: publish-mac
     runs-on: ubuntu-latest
