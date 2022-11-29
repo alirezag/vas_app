@@ -6,7 +6,7 @@ on:
 jobs:
   linux-build-job:
     name: mac-build-job
-    runs-on: mac-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - run: pip install -r requirements.txt
