@@ -16,6 +16,8 @@ jobs:
       - run: python -m pytest
       - run: pip install pyinstaller
       - run: pyinstaller src/main.py
+      - run: ls -a . 
+      - run: ls -a dist
       - uses: actions/upload-artifact@v2
         with:
           name: build-mac
@@ -33,7 +35,7 @@ jobs:
       - run: ls -a *
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r main-mac.zip dist
+          args: zip -qq -r main-mac.zip main
       - name: Upload the artifacts
         uses: skx/github-action-publish-binaries@release-1.3
         env:
