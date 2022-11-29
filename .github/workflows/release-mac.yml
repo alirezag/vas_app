@@ -4,7 +4,7 @@ on:
   release:
     types: [created]
 jobs:
-  linux-build-job:
+  mac-build-job:
     name: mac-build-job
     runs-on: macos-12
     steps:
