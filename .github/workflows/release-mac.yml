@@ -15,7 +15,7 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m pytest
       - run: pip install pyinstaller
-      - run: pyinstaller src/main.py
+      - run: pyinstaller  --onefile src/main.py
       - run: ls -a . 
       - run: ls -a dist
       - run: ls -a dist/main
