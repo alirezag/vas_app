@@ -29,6 +29,8 @@ jobs:
         with:
           name: build-mac
           path: .
+      - run: ls -a . 
+      - run: ls -a *
       - uses: montudor/action-zip@v1
         with:
           args: zip -qq -r main-mac.zip dist/main
