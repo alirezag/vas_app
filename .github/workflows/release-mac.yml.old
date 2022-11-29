@@ -16,10 +16,6 @@ jobs:
       - run: python -m pytest
       - run: pip install pyinstaller
       - run: pyinstaller  --onefile src/main.py
-      - run: chmod +x dist/main
-      - run: ls -a . 
-      - run: ls -a dist
-      - run: ls -a dist/main
       - uses: actions/upload-artifact@v2
         with:
           name: build-mac
