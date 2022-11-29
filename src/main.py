@@ -1,23 +1,17 @@
-
-
-import kivy
-kivy.require('2.1.0') # replace with your current kivy version !
-
-from kivy.app import App
-from kivy.uix.label import Label
+from tkinter import *
+from tkinter import ttk
 
 
 def hello_function():
     print('Hello Function')
     
     
-class MyApp(App):
-
-    def build(self):
-        return Label(text='Hello world')
-
-
-if __name__ == '__main__':
-    MyApp().run()
+if __name__ == '__main__': 
+    root = Tk()
+    frm = ttk.Frame(root, padding=10)
+    frm.grid()
+    ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
+    ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
 
 
+root.mainloop()
