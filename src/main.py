@@ -70,6 +70,7 @@ def runapp():
     root = Tk()
     frm = ttk.Frame(root, padding=10)
     frm.grid()
+    runserver()
     ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
     ttk.Button(frm, text="Quit", command=open_url).grid(column=1, row=0)
 
