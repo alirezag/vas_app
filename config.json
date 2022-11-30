@@ -1,0 +1,3 @@
+{"app_dir": "./app/",
+"server_src": "server.py",
+"server_port": 10008 }

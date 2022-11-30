@@ -20,7 +20,11 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: build-windows
-          path: dist/
+          path: |
+            dist/
+            config.json
+            app/
+            server.py
   publish-mac:
     name: publish-windows
     runs-on: ubuntu-latest
@@ -34,7 +38,7 @@ jobs:
       - run: ls -a *
       - uses: montudor/action-zip@v1
         with:
-          args: zip -qq -r main-windows.zip windows/main
+          args: zip -qq -r main-windows.zip windows/main app config.json server.py
       - name: Upload the artifacts
         uses: skx/github-action-publish-binaries@release-1.3
         env:
