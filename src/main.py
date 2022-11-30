@@ -61,7 +61,7 @@ def open_url():
     webbrowser.open(f'http://localhost:{config.get("server_port",8000)}', new=0, autoraise=True)
     
 def runserver(): 
-    proc = Popen([f"main --server"], shell=True,
+    proc = Popen([f"./main --server"], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
     # return proc
     
