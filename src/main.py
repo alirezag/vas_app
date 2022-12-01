@@ -8,6 +8,7 @@ import http.server
 import socketserver
 from multiprocessing import Process
 import json
+import platform
 
 config = json.load(open('config.json'))
 
@@ -61,7 +62,11 @@ def open_url():
     webbrowser.open(f'http://localhost:{config.get("server_port",8000)}', new=0, autoraise=True)
     
 def runserver(): 
-    proc = Popen([f"./main --server"], shell=True,
+    path = "./dist/main"
+    if platform.system() == "Windows": 
+        path = ".\dist\windows\main\main"
+        
+    proc = Popen([f"{path} --server"], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
     # return proc
     
