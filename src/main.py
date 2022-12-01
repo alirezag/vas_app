@@ -9,6 +9,8 @@ import socketserver
 from multiprocessing import Process
 import json
 import platform
+from datetime import datetime
+import os
 
 config = json.load(open('config.json'))
 
@@ -40,6 +42,9 @@ def setup_server():
             output = json.dumps({"result" : post_body.decode()})
             self.wfile.write(output.encode())
             print(output)
+            if not os.path.isdir('results'):
+                os.makedirs('results')
+            open(os.path.join('results',str(datetime.now()).replace(' ','_') + '.json'),'w').write(output)
             return
 
           
@@ -65,7 +70,7 @@ def runserver():
     path = "./dist/main"
     if platform.system() == "Windows": 
         path = ".\dist\windows\main\main"
-        
+
     proc = Popen([f"{path} --server"], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
     # return proc
@@ -76,8 +81,8 @@ def runapp():
     frm = ttk.Frame(root, padding=10)
     frm.grid()
     runserver()
-    ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-    ttk.Button(frm, text="Quit", command=open_url).grid(column=1, row=0)
+    ttk.Label(frm, text="Welcome to VAS Launcher").grid(column=0, row=0)
+    ttk.Button(frm, text="Launch", command=open_url).grid(column=1, row=0)
 
 
     root.mainloop()
