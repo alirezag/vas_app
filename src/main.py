@@ -71,6 +71,9 @@ def runserver():
     if platform.system() == "Windows": 
         path = ".\dist\windows\main\main"
 
+        Popen([f"cd"], shell=True,
+                stdin=None, stdout=None, stderr=None, close_fds=True)
+
     proc = Popen([f"{path} --server"], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
     # return proc
@@ -89,7 +92,7 @@ def runapp():
 
 if __name__ == '__main__': 
 
-
+    print('current dir:', os.getcwd())
     parser = argparse.ArgumentParser(
                     prog = 'VAS APP',
                     description = 'Assessment of Intelligbility of Speech',
