@@ -73,6 +73,9 @@ def runserver():
 
         Popen([f"cd"], shell=True,
                 stdin=None, stdout=None, stderr=None, close_fds=True)
+    else: 
+        Popen([f"pwd"], shell=True,
+                stdin=None, stdout=None, stderr=None, close_fds=True)
 
     proc = Popen([f"{path} --server"], shell=True,
              stdin=None, stdout=None, stderr=None, close_fds=True)
