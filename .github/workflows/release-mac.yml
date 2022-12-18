@@ -21,7 +21,7 @@ jobs:
           name: build-mac
           path: |
             dist/
-            config.json
+            src/config.json
             app/
             server.py
             run-mac.sh

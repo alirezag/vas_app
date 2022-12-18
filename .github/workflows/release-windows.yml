@@ -22,7 +22,7 @@ jobs:
           name: build-windows
           path: |
             dist/
-            config.json
+            src/config.json
             app/
             server.py
             run-windows.bat
