@@ -151,7 +151,7 @@ def setup_server():
             print(output)
             if not os.path.isdir('results'):
                 os.makedirs('results')
-            open(os.path.join('results',str(datetime.datetime.now()).replace(' ', '_') + '.json'), 'w').write(output)
+            open(os.path.join('results',str(datetime.datetime.now()).replace(' ', '_').replace(':','-') + '.json'), 'w').write(output)
             return
 
 
