@@ -1,0 +1,4 @@
+{"app_dir": "./app/",
+"sounds_dir" : "",
+"server_src": "server.py",
+"server_port": 10008 }

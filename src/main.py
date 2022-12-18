@@ -12,12 +12,8 @@ import platform
 from datetime import datetime
 import os
 
-config = json.load(open('config.json'))
+config = json.load(open('src/config.json'))
 
-def hello_function():
-    print('Hello Function')
-
-config = json.load(open('config.json'))
 PORT=config.get('server_port',8000)
 
 def setup_server():
@@ -59,7 +55,7 @@ def setup_server():
 
 
     with socketserver.TCPServer(("", PORT), Handler) as httpd:
-        print("serving at port", PORT)
+        print("serving at url", f"http://localhost:{PORT}")
         httpd.serve_forever()
 
 

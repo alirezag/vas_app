@@ -3,6 +3,7 @@ import './App.css';
 import MyCard from './MyCard';
 import {Card, Box, Button, CardHeader, CardMedia} from '@mui/material'
 import {useEffect, useState} from "react";
+import config from './config.json'
 function App() {
 
   const [data, setData]= useState([ 
@@ -98,7 +99,7 @@ function App() {
             setAll([getValues]);
           }
 
-          fetch('http://localhost:9000', {
+          fetch(`http://localhost:${config['server_port']}`, {
             method: 'POST', // or 'PUT'
             headers: {
               'Content-Type': 'application/json',
