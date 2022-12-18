@@ -14,6 +14,9 @@ import os
 
 config = json.load(open('src/config.json'))
 
+def hello_function():
+    print('Hello Function')
+
 PORT=config.get('server_port',8000)
 
 def setup_server():
