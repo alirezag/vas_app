@@ -16,7 +16,7 @@ import datetime
 DIRPREFIX = ''
 if os.path.isdir('src'):
     DIRPREFIX = 'src/'
-config = json.load(open('{DIRPREFIX}config.json'))
+config = json.load(open(f'{DIRPREFIX}config.json'))
 
 def hello_function():
     """_summary_
