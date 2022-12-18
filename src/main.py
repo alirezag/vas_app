@@ -13,7 +13,10 @@ import email.utils
 import urllib.parse
 import datetime
 
-config = json.load(open('src/config.json'))
+DIRPREFIX = ''
+if os.path.isdir('src'):
+    DIRPREFIX = 'src/'
+config = json.load(open('{DIRPREFIX}config.json'))
 
 def hello_function():
     """_summary_
@@ -148,7 +151,7 @@ def setup_server():
             print(output)
             if not os.path.isdir('results'):
                 os.makedirs('results')
-            open(os.path.join('results',str(datetime.datetime.now(), encoding='utf-8').replace(' ', '_') + '.json'), 'w').write(output)
+            open(os.path.join('results',str(datetime.datetime.now()).replace(' ', '_') + '.json'), 'w').write(output)
             return
 
 
