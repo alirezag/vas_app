@@ -2,13 +2,13 @@
 import './App.css';
 import MyCard from './MyCard';
 import {Card, Box, Button, CardHeader, CardMedia} from '@mui/material'
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useState} from "react";
 
 import listenerConfig from './speaker_list.json'
 
 function App() {
 
-  const [data, setData]= useState([ 
+  const [data, setData] = useState([ 
     {
     title:   "habla comprensible",
     value : 0,
@@ -68,15 +68,16 @@ function App() {
                 value: 100,
                 label: '100 excelente/típico'
               }]
-            }]);
-    const [getValues,setValues] = useState([0,0,0,0,0]);
-    const [getAll, setAll] = useState(null)
-    const [mediaRef] = useRef();
-    const onChange= (idx,v) => { 
-      const vs = [...getValues];
-      vs[idx]=v
-      setValues(vs)
-    }
+  }]);
+  const [getValues,setValues] = useState([0,0,0,0,0]);
+  const [getAll, setAll] = useState(null)
+  const [playCount, setPlayCount ] = useState(0)
+
+  const onChange= (idx,v) => { 
+    const vs = [...getValues];
+    vs[idx]=v
+    setValues(vs)
+  }
 
   useEffect(() => { 
     setData( d => [...d])
@@ -95,43 +96,47 @@ function App() {
        <Card >
        <CardHeader
         action={
-        <div>
-        <Button>Play</Button>
-        <Button  onClick={ (ev) => { 
-          
-          if (getAll) {
-            setAll([...getAll, getValues]);
-          } else { 
-            setAll([getValues]);
-          }
+          <Button  onClick={ (ev) => { 
+            if (getAll) {
+              setAll([...getAll, getValues]);
+            } else { 
+              setAll([getValues]);
+            }
 
-          fetch(`/`, {
-            method: 'POST', // or 'PUT'
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(getValues),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log('Success:', data);
-              setValues([0,0,0,0,0])
+            fetch(`/`, {
+              method: 'POST', // or 'PUT'
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(getValues),
             })
-            .catch((error) => {
-              console.error('Error:', error);
-            });
-         
-           
-         
-        }}>Save & Next</Button>
-        </div>
+              .then((response) => response.json())
+              .then((data) => {
+                console.log('Success:', data);
+                setValues([0,0,0,0,0])
+              })
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+          }}>Save & Next</Button>
       }/>
         
-        <CardMedia 
+        <CardMedia
+        id="mymedia"
         component="audio"
         src="sounds/audio_sample.mp3"
-        ref={mediaRef}
-        />
+        controls
+        onPlay={(e) => {
+          e.preventDefault()
+          console.log(playCount)
+          if (playCount===2) {
+          //  e.preventDefault()
+           console.log(e)
+          //  e.target.stop()
+        } else {
+          setPlayCount( c => c+1)
+        }
+        }}/>
     
         
         {
