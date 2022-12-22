@@ -77,7 +77,6 @@ function App() {
 
   useEffect(() => { 
     setData( d => [...d])
-    console.log("hie")
   },[getAll])
 
 
