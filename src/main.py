@@ -164,16 +164,16 @@ def setup_server():
 
 
 def open_url():
-    webbrowser.open(f'http://localhost:{config.get("server_port",8000)}', new=0, autoraise=True)
-    
-def runserver(): 
+    webbrowser.open(f'http://localhost:{PORT}', new=0, autoraise=True)
+
+def runserver():
     path = "./dist/main"
-    if platform.system() == "Windows": 
+    if platform.system() == "Windows":
         path = ".\dist\windows\main\main"
 
         Popen([f"cd"], shell=True,
                 stdin=None, stdout=None, stderr=None, close_fds=True)
-    else: 
+    else:
         Popen([f"pwd"], shell=True,
                 stdin=None, stdout=None, stderr=None, close_fds=True)
 

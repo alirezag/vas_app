@@ -2,8 +2,10 @@
 import './App.css';
 import MyCard from './MyCard';
 import {Card, Box, Button, CardHeader, CardMedia} from '@mui/material'
-import {useEffect, useState} from "react";
-import config from './config.json'
+import {useEffect, useRef, useState} from "react";
+
+import listenerConfig from './speaker_list.json'
+
 function App() {
 
   const [data, setData]= useState([ 
@@ -69,6 +71,7 @@ function App() {
             }]);
     const [getValues,setValues] = useState([0,0,0,0,0]);
     const [getAll, setAll] = useState(null)
+    const [mediaRef] = useRef();
     const onChange= (idx,v) => { 
       const vs = [...getValues];
       vs[idx]=v
@@ -80,6 +83,8 @@ function App() {
   },[getAll])
 
 
+  console.log(listenerConfig)
+
 
   return (
     <div className="App">
@@ -90,6 +95,8 @@ function App() {
        <Card >
        <CardHeader
         action={
+        <div>
+        <Button>Play</Button>
         <Button  onClick={ (ev) => { 
           
           if (getAll) {
@@ -98,7 +105,7 @@ function App() {
             setAll([getValues]);
           }
 
-          fetch(`http://localhost:${config['server_port']}`, {
+          fetch(`/`, {
             method: 'POST', // or 'PUT'
             headers: {
               'Content-Type': 'application/json',
@@ -116,12 +123,14 @@ function App() {
          
            
          
-        }}>Save & Next</Button>}/>
+        }}>Save & Next</Button>
+        </div>
+      }/>
         
         <CardMedia 
         component="audio"
         src="sounds/audio_sample.mp3"
-        controls
+        ref={mediaRef}
         />
     
         
