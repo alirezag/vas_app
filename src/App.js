@@ -1,9 +1,10 @@
 
 import './App.css';
 import MyCard from './MyCard';
-import {Card, Box, Button, CardHeader, CardMedia} from '@mui/material'
+import {Card, Box, Button, CardHeader, CardMedia, InputLabel, MenuItem, FormControl} from '@mui/material'
 import { useEffect, useState} from "react";
 import listenerConfig from './speaker_list.json'
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 function App() {
 
@@ -71,11 +72,15 @@ function App() {
   const [getValues,setValues] = useState([0,0,0,0,0]);
   const [getAll, setAll] = useState(null)
   const [playCount, setPlayCount ] = useState(0)
-
+  const [listenerNumber, setListenerNumber] = useState(1)
   const onChange= (idx,v) => { 
     const vs = [...getValues];
     vs[idx]=v
     setValues(vs)
+  }
+
+  const handlelistenerNumberChange = (e) => { 
+    setListenerNumber( e.target.value )
   }
 
   useEffect(() => { 
@@ -96,8 +101,21 @@ function App() {
        <CardHeader
         action={
           <div> 
+            <FormControl >
+  <InputLabel id="demo-simple-select-label">Listener Number</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={listenerNumber}
+    label="Listener Number"
+    onChange={handlelistenerNumberChange}
+  >
+    {listenerConfig.map( item => <MenuItem value={item.listener}>Listener {item.listener}</MenuItem>) }
+    
+  </Select>
+</FormControl>
             <Button onClick={ (e) => document.getElementById("mymedia").play() }>Play</Button>
-          <Button  onClick={ (ev) => { 
+            <Button  onClick={ (ev) => { 
             if (getAll) {
               setAll([...getAll, getValues]);
             } else { 
@@ -119,7 +137,7 @@ function App() {
               .catch((error) => {
                 console.error('Error:', error);
               });
-          }}>Save & Next</Button>
+            }}>Save & Next</Button>
           </div>
       }
        />

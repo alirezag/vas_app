@@ -12,6 +12,11 @@ jobs:
         with:
           python-version: '3.10' 
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: 
+          node-version: '16'
+      - run: npm ci
+      - run: npm run build
       - run: pip install -r requirements.txt
       - run: python -m pytest
       - uses: JackMcKew/pyinstaller-action-windows@main
@@ -26,7 +31,7 @@ jobs:
             app/
             server.py
             run-windows.bat
-  publish-mac:
+  publish-windows:
     name: publish-windows
     runs-on: ubuntu-latest
     needs: windows-build-job
