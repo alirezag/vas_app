@@ -79,8 +79,8 @@ function App() {
     setValues(vs)
   }
 
-  const handlelistenerNumberChange = (e) => { 
-    setListenerNumber( e.target.value )
+  const handlelistenerNumberChange = (event: SelectChangeEvent) => { 
+    setListenerNumber( event.target.value )
   }
 
   useEffect(() => { 
