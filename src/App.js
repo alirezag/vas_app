@@ -3,7 +3,6 @@ import './App.css';
 import MyCard from './MyCard';
 import {Card, Box, Button, CardHeader, CardMedia} from '@mui/material'
 import { useEffect, useState} from "react";
-
 import listenerConfig from './speaker_list.json'
 
 function App() {
@@ -96,6 +95,8 @@ function App() {
        <Card >
        <CardHeader
         action={
+          <div> 
+            <Button onClick={ (e) => document.getElementById("mymedia").play() }>Play</Button>
           <Button  onClick={ (ev) => { 
             if (getAll) {
               setAll([...getAll, getValues]);
@@ -119,7 +120,9 @@ function App() {
                 console.error('Error:', error);
               });
           }}>Save & Next</Button>
-      }/>
+          </div>
+      }
+       />
         
         <CardMedia
         id="mymedia"

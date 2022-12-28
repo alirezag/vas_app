@@ -1,6 +1,8 @@
+from enum import Enum
 from http import HTTPStatus
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 import webbrowser
 from subprocess import Popen
 import json
@@ -13,10 +15,30 @@ import email.utils
 import urllib.parse
 import datetime
 
+# the keys stimuli directory dictionary.
+class StimuliPathKey(str,Enum):
+    """
+    The keys stimuli directory dictionary.
+    """
+    # the key for the stimuli directory.
+    STIMULI = 'stimuli'
+    RELIABILITY = 'reliability'
+    MSG = 'message'
+    LAUNCH = 'launch'
+
+
+# path to the stimuli directory, set by user
+STIMULI_DIR = { }
+STIMULI_DIR_LABELS = {}
+
+# set up the prefix path.
 DIRPREFIX = ''
 if os.path.isdir('src'):
     DIRPREFIX = 'src/'
+
+# load the config file
 config = json.load(open(f'{DIRPREFIX}config.json'))
+
 
 def hello_function():
     """_summary_
@@ -24,6 +46,7 @@ def hello_function():
     """
     print('Hello Function')
 
+# parser the server port
 PORT=config.get('server_port',8000)
 
 def setup_server():
@@ -31,8 +54,10 @@ def setup_server():
     Setup server
     """
     class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
-
-        def send_head(self):
+        """Implementation of HTTP request handler class with GET and HEAD commands."""
+        
+        
+        def send_head(self, no_translate=True):
             """Common code for GET and HEAD commands.
 
             This sends the response code and MIME headers.
@@ -43,7 +68,12 @@ def setup_server():
             None, in which case the caller has nothing further to do.
 
             """
-            path = self.translate_path(self.path)
+            if no_translate: 
+                path = self.path
+            else:
+                path = self.translate_path(self.path)
+
+               
             f = None
             if os.path.isdir(path):
                 parts = urllib.parse.urlsplit(self.path)
@@ -75,6 +105,7 @@ def setup_server():
                 self.send_error(HTTPStatus.NOT_FOUND, "File not found")
                 return None
             try:
+                # print(path)
                 f = open(path, 'rb')
             except OSError:
                 self.send_error(HTTPStatus.NOT_FOUND, "File not found")
@@ -125,10 +156,22 @@ def setup_server():
         def do_GET(self):
             # self.path = os.path.join(config.get('app_dir','./app'),self.path)
             # self.path = "./app/"+self.path
-            self.path = config.get('app_dir','./app') + self.path
+            f=None
+            if self.path.startswith('/audio'):
+                self.path = urllib.parse.unquote(self.path)
+                STIMULI_DIR.update(json.load(open('data.json','r')))
+                if self.path.startswith('/audio/stimuli'):
+                    self.path = self.path.replace('/audio/stimuli','')
+                    self.path = STIMULI_DIR[StimuliPathKey.STIMULI] + self.path
+                elif self.path.startswith('/audio/reliability'):
+                    self.path = self.path.replace('/audio/reliability','')
+                    self.path = STIMULI_DIR[StimuliPathKey.RELIABILITY] + self.path 
+                f = self.send_head(no_translate=True)
+            else:
+                self.path = config.get('app_dir','./app') + self.path
+                f = self.send_head()
+            # print(self.path)
             
-            
-            f = self.send_head()
             if f:
                 try:
                     self.copyfile(f, self.wfile)
@@ -139,7 +182,7 @@ def setup_server():
         def do_POST(self):
             content_len = int(self.headers.get('Content-Length'))
             post_body = self.rfile.read(content_len)
-            print(json.loads(post_body.decode()))
+            # print(json.loads(post_body.decode()))
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -148,7 +191,7 @@ def setup_server():
 
             output = json.dumps({"result" : post_body.decode()})
             self.wfile.write(output.encode())
-            print(output)
+            # print(output)
             if not os.path.isdir('results'):
                 os.makedirs('results')
             open(os.path.join('results',str(datetime.datetime.now()).replace(' ', '_').replace(':','-') + '.json'), 'w').write(output)
@@ -165,6 +208,22 @@ def setup_server():
 
 def open_url():
     webbrowser.open(f'http://localhost:{PORT}', new=0, autoraise=True)
+
+def get_path(key:StimuliPathKey): 
+    assert key in [StimuliPathKey.RELIABILITY, StimuliPathKey.STIMULI]
+    try: 
+        STIMULI_DIR[key] = filedialog.askdirectory()
+        STIMULI_DIR_LABELS[key].config(text=STIMULI_DIR[key])
+    except Exception as E:
+        print("error",E )
+
+    if STIMULI_DIR[StimuliPathKey.STIMULI] and STIMULI_DIR[StimuliPathKey.RELIABILITY]:
+        STIMULI_DIR_LABELS[StimuliPathKey.LAUNCH].config(state=NORMAL)
+        STIMULI_DIR_LABELS[StimuliPathKey.MSG].config(text="Now you can launch the app.")
+        with open('data.json','w') as f:
+            json.dump(STIMULI_DIR,f)
+
+    
 
 def runserver():
     path = "./dist/main"
@@ -187,7 +246,17 @@ def runapp():
     frm.grid()
     runserver()
     ttk.Label(frm, text="Welcome to VAS Launcher").grid(column=0, row=0)
-    ttk.Button(frm, text="Launch", command=open_url).grid(column=1, row=0)
+    STIMULI_DIR_LABELS[StimuliPathKey.LAUNCH] = ttk.Button(frm, text="Launch", command=open_url, state='disabled')
+    STIMULI_DIR_LABELS[StimuliPathKey.LAUNCH].grid(column=1, row=0)
+    STIMULI_DIR_LABELS[StimuliPathKey.MSG] = ttk.Label(frm, text="Select paths to continue.")
+    STIMULI_DIR_LABELS[StimuliPathKey.MSG].grid(column=0, row=1)
+    
+    STIMULI_DIR_LABELS[StimuliPathKey.STIMULI] = ttk.Label(frm, text="Select the path to stimuli")
+    STIMULI_DIR_LABELS[StimuliPathKey.STIMULI].grid(column=0, row=2)
+    ttk.Button(frm, text="Select", command= lambda : get_path(StimuliPathKey.STIMULI)).grid(column=1, row=2)
+    STIMULI_DIR_LABELS[StimuliPathKey.RELIABILITY] = ttk.Label(frm, text="Select the path to reliability stimuli")
+    STIMULI_DIR_LABELS[StimuliPathKey.RELIABILITY].grid(column=0, row=3)
+    ttk.Button(frm, text="Select", command= lambda : get_path(StimuliPathKey.RELIABILITY)).grid(column=1, row=3)
 
 
     root.mainloop()
